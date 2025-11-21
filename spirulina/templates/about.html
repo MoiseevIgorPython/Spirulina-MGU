@@ -1,0 +1,306 @@
+{% extends 'index.html' %}
+
+{% block title %}
+  О спирулине МГУ - Спирулина-МГУ
+{% endblock %}
+
+{% block content %}
+<div class="about-container">
+  <div class="about-content">
+    <!-- Заголовок -->
+    <h1 class="about-title">О спирулине МГУ и Михаиле Яковлевиче Лямине</h1>
+    
+    <!-- Контент с улучшенной структурой -->
+    <div class="about-text">
+      <!-- Блок с преимуществами -->
+      <div class="feature-block">
+        <div class="feature-icon">🌿</div>
+        <p>Русская спирулина содержит более <strong>2000 органических и минеральных соединений</strong>.</p>
+      </div>
+
+      <div class="feature-block">
+        <div class="feature-icon">⏳</div>
+        <p>В России на протяжении <strong>30 лет</strong> приоритет в этой области принадлежит <strong>М. Я. Лямину</strong>.</p>
+      </div>
+
+      <div class="feature-block">
+        <div class="feature-icon">🏛️</div>
+        <p>В настоящее время единственным предприятием в России, выращивающим спирулину (<em>spirulina platensis</em>) в промышленных масштабах и ведущим научные работы по селекции и отбору, является <strong>НПО «Биосоляр МГУ»</strong>.</p>
+      </div>
+
+      <div class="feature-block">
+        <div class="feature-icon">📈</div>
+        <p>Благодаря научным разработкам и новаторским технологиям <strong>М. Я. Лямина</strong> урожайность спирулины увеличивается в <strong>5–10 раз (!)</strong>.</p>
+      </div>
+
+      <div class="feature-block">
+        <div class="feature-icon">⭐</div>
+        <p>При этом качество спирулины и её содержание намного превосходят качество биомассы, добываемой в природе.</p>
+      </div>
+
+      <div class="feature-block">
+        <div class="feature-icon">🔬</div>
+        <p>Кроме того, наша спирулина благодаря отбору клеток и применяемым биотехнологиям отличается <strong>высочайшей чистотой и биологической активностью</strong>.</p>
+      </div>
+    </div>
+
+    <!-- Дополнительный информационный блок -->
+    <div class="info-card">
+      <h3 class="info-card-title">Почему выбирают нашу спирулину?</h3>
+      <ul class="benefits-list">
+        <li>✅ Научный подход МГУ</li>
+        <li>✅ 30 лет исследований</li>
+        <li>✅ Промышленное производство</li>
+        <li>✅ Высокая биологическая активность</li>
+        <li>✅ Экологическая чистота</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Мобильная оптимизация страницы "О спирулине" */
+  .about-container {
+    padding: 20px 15px;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+    color: #333;
+  }
+
+  .about-title {
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    text-align: center;
+    line-height: 1.3;
+    color: #2c5530;
+  }
+
+  .about-text {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+  }
+
+  .feature-block {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border-left: 4px solid #556B2F;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .feature-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .feature-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .feature-block p {
+    margin: 0;
+    font-size: 1rem;
+    flex: 1;
+  }
+
+  .feature-block strong {
+    color: #556B2F;
+    font-weight: 600;
+  }
+
+  .info-card {
+    background: linear-gradient(135deg, #556B2F, #6B8E23);
+    color: white;
+    padding: 25px 20px;
+    border-radius: 16px;
+    margin-top: 30px;
+    box-shadow: 0 4px 15px rgba(85, 107, 47, 0.2);
+  }
+
+  .info-card-title {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .benefits-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .benefits-list li {
+    padding: 10px 0;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .benefits-list li:last-child {
+    border-bottom: none;
+  }
+
+  /* Адаптивность для мобильных */
+  @media (max-width: 576px) {
+    .about-container {
+      padding: 15px 12px;
+      margin: 10px auto;
+    }
+
+    .about-title {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      padding: 0 10px;
+    }
+
+    .about-text {
+      font-size: 1rem;
+    }
+
+    .feature-block {
+      padding: 12px;
+      margin-bottom: 20px;
+      flex-direction: column;
+      text-align: center;
+      gap: 10px;
+    }
+
+    .feature-icon {
+      font-size: 1.8rem;
+      margin-top: 0;
+    }
+
+    .feature-block p {
+      font-size: 0.95rem;
+    }
+
+    .info-card {
+      padding: 20px 15px;
+      margin-top: 25px;
+    }
+
+    .info-card-title {
+      font-size: 1.2rem;
+    }
+
+    .benefits-list li {
+      font-size: 0.95rem;
+      padding: 8px 0;
+    }
+  }
+
+  @media (min-width: 577px) and (max-width: 768px) {
+    .about-container {
+      padding: 25px 20px;
+    }
+
+    .about-title {
+      font-size: 1.6rem;
+    }
+
+    .feature-block {
+      padding: 18px;
+    }
+  }
+
+  /* Планшеты и десктопы */
+  @media (min-width: 769px) {
+    .about-container {
+      padding: 40px 20px;
+    }
+
+    .about-title {
+      font-size: 2rem;
+      margin-bottom: 35px;
+    }
+
+    .feature-block {
+      padding: 20px 25px;
+      margin-bottom: 30px;
+    }
+  }
+
+  /* Улучшение читабельности */
+  @media (prefers-color-scheme: dark) {
+    .about-container {
+      color: #e0e0e0;
+    }
+
+    .feature-block {
+      background: #2a2a2a;
+      border-left-color: #6B8E23;
+    }
+
+    .feature-block strong {
+      color: #8FBC8F;
+    }
+  }
+
+  /* Анимации */
+  .feature-block {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Улучшение доступности */
+  @media (prefers-reduced-motion: reduce) {
+    .feature-block {
+      animation: none;
+      transition: none;
+    }
+  }
+
+  /* Поддержка больших экранов */
+  @media (min-width: 1200px) {
+    .about-container {
+      max-width: 900px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Плавное появление блоков при скролле
+    const featureBlocks = document.querySelectorAll('.feature-block');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    featureBlocks.forEach(block => {
+      block.style.opacity = '0';
+      block.style.transform = 'translateY(20px)';
+      block.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(block);
+    });
+
+    // Оптимизация для мобильных - предотвращение масштабирования при фокусе
+    if (window.innerWidth <= 768) {
+      document.body.style.zoom = "1.0";
+    }
+  });
+</script>
+{% endblock %}

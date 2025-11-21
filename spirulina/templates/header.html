@@ -1,0 +1,299 @@
+<header class="header-mobile">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm" style="background-color: #556B2F;">
+    <div class="container-fluid">
+      <!-- Бренд/логотип -->
+      <a class="navbar-brand fw-bold" href="{{ url_for('index') }}" style="color: #fff;">
+        Спирулина-МГУ
+      </a>
+      
+      <!-- Мобильный тогглер -->
+      <button class="navbar-toggler" 
+              type="button" 
+              data-bs-toggle="collapse" 
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav" 
+              aria-expanded="false" 
+              aria-label="Переключить навигацию">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Навигационное меню -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" 
+               href="{{ url_for('index') }}"
+               aria-current="page">
+               <span class="nav-icon">🏠</span>
+               Главная
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" 
+               href="{{ url_for('about') }}">
+               <span class="nav-icon">ℹ️</span>
+               О спирулине
+            </a>
+          </li>
+        </ul>
+        
+        <!-- Дополнительные контакты в меню для мобильных -->
+        <div class="navbar-contacts d-lg-none mt-3 pt-3 border-top">
+          <div class="contact-item mb-2">
+            <a href="tel:+79265954554" class="text-white text-decoration-none">
+              <span class="contact-icon">📱</span>
+              +7 926 595 45 54
+            </a>
+          </div>
+          <div class="contact-item">
+            <a href="mailto:spirulina-mgu@ya.ru" class="text-white text-decoration-none">
+              <span class="contact-icon">✉️</span>
+              spirulina-mgu@ya.ru
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Отступ для фиксированного хедера -->
+  <div class="header-spacer"></div>
+</header>
+
+<style>
+  /* Мобильная оптимизация хедера */
+  .header-mobile {
+    width: 100%;
+  }
+  
+  .navbar {
+    min-height: 60px;
+    padding: 8px 0;
+  }
+  
+  .navbar-brand {
+    font-size: 1.2rem;
+    margin-right: auto;
+    padding: 8px 0;
+  }
+  
+  .navbar-toggler {
+    border: none;
+    padding: 8px 12px;
+    margin-left: auto;
+  }
+  
+  .navbar-toggler:focus {
+    box-shadow: none;
+    outline: 2px solid rgba(255,255,255,0.5);
+  }
+  
+  .navbar-toggler-icon {
+    width: 1.2em;
+    height: 1.2em;
+  }
+  
+  .nav-link {
+    color: #fff !important;
+    font-weight: 500;
+    padding: 12px 16px !important;
+    margin: 2px 0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px; /* Минимальный размер для тапов */
+  }
+  
+  .nav-link:hover,
+  .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    transform: translateY(-1px);
+  }
+  
+  .nav-icon {
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+  }
+  
+  .navbar-contacts {
+    border-top-color: rgba(255, 255, 255, 0.2) !important;
+  }
+  
+  .contact-item a {
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .contact-item a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+  }
+  
+  .contact-icon {
+    font-size: 1rem;
+    width: 20px;
+    text-align: center;
+  }
+  
+  .header-spacer {
+    height: 76px; /* Высота фиксированного хедера */
+  }
+  
+  /* Адаптивность для разных экранов */
+  @media (max-width: 576px) {
+    .navbar {
+      min-height: 56px;
+      padding: 6px 0;
+    }
+    
+    .navbar-brand {
+      font-size: 1.1rem;
+    }
+    
+    .container-fluid {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+    
+    .nav-link {
+      padding: 14px 16px !important;
+      font-size: 1rem;
+    }
+    
+    .header-spacer {
+      height: 68px;
+    }
+    
+    .navbar-collapse {
+      background-color: #556B2F;
+      padding: 15px;
+      margin: 8px -15px -8px -15px;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+  }
+  
+  @media (min-width: 577px) and (max-width: 768px) {
+    .navbar-brand {
+      font-size: 1.3rem;
+    }
+    
+    .header-spacer {
+      height: 72px;
+    }
+  }
+  
+  @media (min-width: 769px) {
+    .navbar-nav {
+      gap: 8px;
+    }
+    
+    .nav-link {
+      padding: 10px 20px !important;
+      margin: 0 4px;
+    }
+    
+    .navbar-contacts {
+      display: none !important;
+    }
+  }
+  
+  /* Анимации и переходы */
+  .navbar-collapse {
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .nav-link {
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .nav-link:active {
+    transform: scale(0.98);
+  }
+  
+  /* Улучшение доступности */
+  @media (prefers-reduced-motion: reduce) {
+    .navbar-collapse,
+    .nav-link {
+      transition: none;
+    }
+  }
+  
+  /* Поддержка темной темы */
+  @media (prefers-color-scheme: dark) {
+    .navbar {
+      background-color: #556B2F !important; /* Сохраняем зеленый цвет */
+    }
+  }
+  
+  /* Фикс для iOS Safari */
+  @supports (-webkit-touch-callout: none) {
+    .navbar {
+      padding: 8px 0;
+      min-height: 60px;
+    }
+    
+    .nav-link {
+      -webkit-tap-highlight-color: transparent;
+    }
+  }
+</style>
+
+<script>
+  // Оптимизация для мобильных устройств
+  document.addEventListener('DOMContentLoaded', function() {
+    const navbarToggler = document.querySelector('.navbar-toggler');
+    const navbarCollapse = document.querySelector('.navbar-collapse');
+    
+    // Закрытие меню при клике на ссылку (для мобильных)
+    if (window.innerWidth < 769) {
+      const navLinks = document.querySelectorAll('.nav-link');
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          const bsCollapse = new bootstrap.Collapse(navbarCollapse);
+          bsCollapse.hide();
+        });
+      });
+    }
+    
+    // Предотвращение двойного тапа на мобильных
+    let lastTap = 0;
+    document.addEventListener('touchend', function(event) {
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTap;
+      if (tapLength < 500 && tapLength > 0) {
+        event.preventDefault();
+      }
+      lastTap = currentTime;
+    });
+    
+    // Динамическое обновление высоты отступа
+    function updateHeaderSpacer() {
+      const headerHeight = document.querySelector('.navbar').offsetHeight;
+      document.querySelector('.header-spacer').style.height = headerHeight + 'px';
+    }
+    
+    // Обновляем при загрузке и изменении размера
+    updateHeaderSpacer();
+    window.addEventListener('resize', updateHeaderSpacer);
+    
+    // Добавляем класс при скролле
+    window.addEventListener('scroll', function() {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  });
+</script>

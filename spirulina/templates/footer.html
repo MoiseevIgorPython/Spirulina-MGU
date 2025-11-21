@@ -1,0 +1,250 @@
+<footer class="footer-mobile border-top text-center py-3" style="background-color: white;">
+  <div class="container">
+    <!-- Заголовок -->
+    <strong class="footer-title h5 d-block mb-2">Свяжитесь с нами</strong>
+    
+    <!-- Контактная информация -->
+    <div class="footer-contacts">
+      <!-- Телефон с кликабельной ссылкой -->
+      <div class="contact-item mb-2">
+        <a href="tel:+79265954554" class="contact-link phone-link text-decoration-none">
+          <span class="contact-icon">📱</span>
+          +7 926 595 45 54
+        </a>
+      </div>
+      
+      <!-- Email с кликабельной ссылкой -->
+      <div class="contact-item">
+        <a href="mailto:spirulina-mgu@ya.ru" class="contact-link email-link text-decoration-none">
+          <span class="contact-icon">✉️</span>
+          spirulina-mgu@ya.ru
+        </a>
+      </div>
+    </div>
+    
+    <!-- Дополнительные кнопки действий для мобильных -->
+    <div class="footer-actions mt-3 d-flex justify-content-center gap-3">
+      <!-- Кнопка звонка -->
+      <a href="tel:+79265954554" class="btn btn-success btn-sm action-btn">
+        <span class="btn-icon">📞</span>
+        Позвонить
+      </a>
+      
+      <!-- Кнопка написания email -->
+      <a href="mailto:spirulina-mgu@ya.ru" class="btn btn-outline-primary btn-sm action-btn">
+        <span class="btn-icon">📧</span>
+        Написать
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* Мобильная оптимизация футера */
+  .footer-mobile {
+    position: relative; /* Убираем fixed для мобильных */
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .footer-title {
+    font-size: 1.2rem;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .contact-link {
+    color: #555;
+    font-size: 1rem;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px; /* Минимальный размер для тапов */
+  }
+  
+  .contact-link:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .phone-link {
+    font-weight: 600;
+    color: #28a745;
+  }
+  
+  .email-link {
+    color: #007bff;
+  }
+  
+  .contact-icon {
+    font-size: 1.1rem;
+  }
+  
+  .footer-actions {
+    flex-wrap: wrap;
+  }
+  
+  .action-btn {
+    min-height: 44px;
+    min-width: 120px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-weight: 500;
+    border-radius: 25px;
+  }
+  
+  .btn-icon {
+    font-size: 1rem;
+  }
+  
+  /* Адаптивность для разных экранов */
+  @media (max-width: 576px) {
+    .footer-mobile {
+      padding: 15px 0 !important;
+    }
+    
+    .footer-title {
+      font-size: 1.1rem;
+      margin-bottom: 15px !important;
+    }
+    
+    .contact-link {
+      font-size: 0.95rem;
+      padding: 10px 15px;
+      min-height: 48px;
+    }
+    
+    .footer-actions {
+      flex-direction: column;
+      gap: 10px !important;
+      width: 100%;
+      max-width: 280px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .action-btn {
+      width: 100%;
+      min-width: auto;
+      padding: 12px 20px;
+      font-size: 1rem;
+    }
+    
+    .container {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
+  
+  @media (min-width: 577px) and (max-width: 768px) {
+    .footer-mobile {
+      padding: 20px 0 !important;
+    }
+    
+    .footer-actions {
+      max-width: 400px;
+      margin: 20px auto 0;
+    }
+    
+    .action-btn {
+      min-width: 140px;
+      padding: 10px 20px;
+    }
+  }
+  
+  /* Для десктопов - фиксированное положение */
+  @media (min-width: 769px) {
+    .footer-mobile {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+    
+    /* Добавляем отступ для контента, чтобы не перекрывался футером */
+    body {
+      padding-bottom: 100px;
+    }
+  }
+  
+  /* Темная тема поддержка */
+  @media (prefers-color-scheme: dark) {
+    .footer-mobile {
+      background-color: #1a1a1a !important;
+      color: #fff;
+      border-top-color: #333;
+    }
+    
+    .footer-title {
+      color: #fff;
+    }
+    
+    .contact-link {
+      color: #ccc;
+    }
+    
+    .contact-link:hover {
+      background-color: #2a2a2a;
+      color: #4dabf7;
+    }
+  }
+  
+  /* Анимации */
+  .contact-link, .action-btn {
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .contact-link:active, .action-btn:active {
+    transform: scale(0.98);
+  }
+  
+  /* Улучшение доступности */
+  @media (prefers-reduced-motion: reduce) {
+    .contact-link, .action-btn {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Оптимизация для мобильных устройств
+  document.addEventListener('DOMContentLoaded', function() {
+    // Определяем мобильное устройство
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      // Для мобильных добавляем дополнительные классы
+      document.querySelector('.footer-mobile').classList.add('mobile-device');
+      
+      // Логирование кликов по контактам для аналитики
+      const contactLinks = document.querySelectorAll('.contact-link, .action-btn');
+      contactLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          console.log('Contact action:', this.textContent.trim());
+          // Здесь можно добавить отправку в Google Analytics
+        });
+      });
+    }
+    
+    // Динамический отступ для контента при фиксированном футере
+    function updateBodyPadding() {
+      if (window.innerWidth >= 769) {
+        const footerHeight = document.querySelector('.footer-mobile').offsetHeight;
+        document.body.style.paddingBottom = footerHeight + 'px';
+      } else {
+        document.body.style.paddingBottom = '0';
+      }
+    }
+    
+    // Обновляем при загрузке и изменении размера
+    updateBodyPadding();
+    window.addEventListener('resize', updateBodyPadding);
+  });
+</script>

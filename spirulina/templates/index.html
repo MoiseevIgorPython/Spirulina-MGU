@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="Спирулина-МГУ - качественная спирулина от МГУ">
+  
+  <!-- Предзагрузка критических ресурсов -->
+  <link rel="preload" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" as="style">
+  <link rel="preload" href="{{ url_for('static', filename='css/style.css') }}" as="style">
+  
+  <!-- CSS с медиа-запросами -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" media="all">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/carousel.css') }}" media="all">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" media="all">
+  
+  <!-- Дополнительные мета-теги для iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <title>
+    {% block title %}Спирулина-МГУ{% endblock %}
+  </title>
+  
+  <!-- Инлайн критический CSS для мобильных -->
+  <style>
+    /* Критичные стили для мобильных */
+    body {
+      font-size: 16px;
+      line-height: 1.4;
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Улучшение скролла на iOS */
+    .container {
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Быстрое отображение контента */
+    .header, .main-content, .footer {
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+    
+    /* Оптимизация тапов на мобильных */
+    .btn, a {
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+
+<body class="mobile-optimized">
+  <!-- Контент появляется после загрузки CSS -->
+  <script>
+    document.body.classList.add('loading');
+  </script>
+
+  {% include 'header.html' %}
+
+  <main class="main-content">
+    {% block content %}{% endblock content %}
+  </main>
+  
+  {% include 'footer.html' %}
+
+  <!-- Скрипты в конце body с defer -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" 
+          integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" 
+          crossorigin="anonymous"
+          defer></script>
+  
+  <!-- Только один Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" 
+          defer></script>
+  
+  <!-- Кастомные скрипты -->
+  <script>
+    // Убираем класс loading после загрузки
+    document.addEventListener('DOMContentLoaded', function() {
+      document.body.classList.remove('loading');
+      
+      // Оптимизация для мобильных
+      if ('ontouchstart' in window) {
+        document.body.classList.add('touch-device');
+      }
+      
+      // Lazy loading для изображений
+      if ('IntersectionObserver' in window) {
+        const lazyImages = document.querySelectorAll('img[data-src]');
+        const imageObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+              img.src = img.dataset.src;
+              img.classList.remove('lazy');
+              imageObserver.unobserve(img);
+            }
+          });
+        });
+        
+        lazyImages.forEach(img => imageObserver.observe(img));
+      }
+    });
+  </script>
+</body>
+
+</html>

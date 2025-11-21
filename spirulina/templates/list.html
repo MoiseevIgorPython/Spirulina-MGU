@@ -1,0 +1,255 @@
+{% extends 'index.html' %}
+
+{% block title %}
+  Каталог
+{% endblock %}
+
+{% block content %}
+<main>
+  <style>
+    /* Мобильная оптимизация карусели */
+    .carousel-inner {
+      height: 50vh;
+      max-height: 400px;
+      min-height: 250px;
+    }
+    
+    .carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    
+    /* Адаптивные карточки товаров */
+    .product-card {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      min-height: 350px;
+      margin: 8px auto;
+    }
+    
+    .product-image {
+      height: 150px;
+      object-fit: cover;
+    }
+    
+    /* Адаптивная форма */
+    .order-form {
+      max-width: 100%;
+      margin: 20px auto;
+      border: 1px solid #4b4949;
+      border-radius: 0.25rem;
+    }
+    
+    /* Улучшение тапов на мобильных */
+    .btn, .card a {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Оптимизация для маленьких экранов */
+    @media (max-width: 576px) {
+      .carousel-inner {
+        height: 40vh;
+        max-height: 300px;
+      }
+      
+      .product-card {
+        margin: 6px auto;
+      }
+      
+      .container-section {
+        transform: translateY(-60px);
+        padding: 0 12px;
+      }
+      
+      .card-title {
+        font-size: 1.1rem;
+      }
+      
+      .card-text {
+        font-size: 0.9rem;
+      }
+    }
+    
+    /* Планшеты */
+    @media (min-width: 577px) and (max-width: 768px) {
+      .carousel-inner {
+        height: 45vh;
+        max-height: 350px;
+      }
+      
+      .product-card {
+        width: calc(50% - 16px);
+      }
+    }
+    
+    /* Lazy loading для изображений */
+    .carousel-image, .product-image {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .carousel-image.loaded, .product-image.loaded {
+      opacity: 1;
+    }
+  </style>
+
+  <section class="container-section container my-5 px-3 px-md-4" style="transform: translateY(-80px);">
+    <h1 class="text-center mb-4">Спирулина-<span style="color:red">МГУ</span></h1>
+
+    <!-- Карусель с lazy loading -->
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+      <div class="carousel-indicators">
+        {% for photo in blog_photos %}
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ loop.index0 }}" 
+                  {% if loop.first %}class="active"{% endif %} 
+                  aria-label="Slide {{ loop.index }}"></button>
+        {% endfor %}
+      </div>
+      
+      <div class="carousel-inner">
+        {% for photo in blog_photos %}
+          <div class="carousel-item {% if loop.first %}active{% endif %}">
+            <img src="{{ url_for('image', dir_name='blog', filename=photo) }}" 
+                 class="d-block w-100 carousel-image {% if loop.first %}loaded{% endif %}"
+                 data-src="{{ url_for('image', dir_name='blog', filename=photo) }}"
+                 alt="Фото {{ loop.index }}"
+                 {% if not loop.first %}loading="lazy"{% endif %}>
+          </div>
+        {% endfor %}
+      </div>
+      
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Предыдущий</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Следующий</span>
+      </button>
+    </div>
+
+    <p class="text-center my-4 h5">
+      Наша продукция
+    </p>
+
+    <!-- Сетка товаров -->
+    <div class="products-container">
+      <div class="row justify-content-center g-3 g-md-4">
+        {% for product in products %}
+          <div class="col-12 col-sm-6 col-lg-4 d-flex justify-content-center">
+            <div class="card product-card shadow-sm">
+              <div class="d-flex flex-column h-100">
+                <!-- Изображение товара -->
+                <div class="flex-shrink-0" style="height: 150px; overflow: hidden;">
+                  <a href="{{ url_for('detail', id=product.id)}}" class="h-100 d-block">
+                    <img src="{{ url_for('image', dir_name='products', filename=product.photo) }}" 
+                         alt="{{ product.title }}"
+                         class="product-image w-100 h-100 loaded"
+                         loading="lazy"
+                         style="object-fit: cover;">
+                  </a>
+                </div>
+                
+                <!-- Информация о товаре -->
+                <div class="card-body d-flex flex-column flex-grow-1">
+                  <h5 class="card-title">
+                    <a href="{{ url_for('detail', id=product.id)}}" class="text-decoration-none text-dark">
+                      {{ product.title }}
+                    </a>
+                  </h5>
+                  <p class="card-text flex-grow-1 small">{{ product.description|truncate(100) }}</p>
+                  <p class="card-text mt-auto mb-0"><strong>Цена:</strong> {{ product.price }} ₽</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Форма заказа -->
+    <div class="card order-form p-3 p-md-4 mt-5">
+      <strong class="h4 mb-2">Чтобы сделать заказ,</strong>
+      <p class="h5 mb-3">отправьте форму, и наш менеджер Вам перезвонит</p>
+
+      <form method="POST" novalidate class="needs-validation">
+        {{ form.csrf_token }}
+        
+        <div class="mb-3">
+          {{ form.name(type="text", class="form-control form-control-lg py-3", id="form-name", placeholder="Ваше имя", required=true) }}
+          {% if form.name.errors %}
+            <div class="invalid-feedback d-block">
+              {% for error in form.name.errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+        
+        <div class="mb-3">
+          {{ form.number(type="tel", class="form-control form-control-lg py-3", id="form-phone", placeholder="Телефон", inputmode="tel", required=true) }}
+          {% if form.number.errors %}
+            <div class="invalid-feedback d-block">
+              {% for error in form.number.errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+        
+        <div class="mb-4">
+          {{ form.email(type="email", class="form-control form-control-lg py-3", id="form-email", placeholder="Электронная почта", inputmode="email") }}
+          {% if form.email.errors %}
+            <div class="invalid-feedback d-block">
+              {% for error in form.email.errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+        
+        {{ form.submit(type="submit", class="btn btn-primary btn-lg w-100 py-3", value="Отправить") }}
+      </form>
+    </div>
+  </section>
+</main>
+
+<script>
+  // Lazy loading для карусели
+  document.addEventListener('DOMContentLoaded', function() {
+    // Lazy load карусельных изображений
+    const carouselImages = document.querySelectorAll('.carousel-image');
+    
+    carouselImages.forEach(img => {
+      if (!img.classList.contains('loaded')) {
+        img.src = img.dataset.src;
+        img.onload = function() {
+          img.classList.add('loaded');
+        };
+      }
+    });
+    
+    // Оптимизация ввода на мобильных
+    const phoneInput = document.getElementById('form-phone');
+    if (phoneInput) {
+      phoneInput.addEventListener('input', function(e) {
+        this.value = this.value.replace(/[^\d+()-]/g, '');
+      });
+    }
+    
+    // Предотвращение масштабирования при фокусе на инпутах
+    const inputs = document.querySelectorAll('input[type="text"], input[type="tel"], input[type="email"]');
+    inputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        window.scrollTo(0, 0);
+        document.body.style.zoom = "1.0";
+      });
+    });
+  });
+</script>
+{% endblock %}

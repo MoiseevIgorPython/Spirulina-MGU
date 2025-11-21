@@ -1,0 +1,48 @@
+{% extends 'index.html' %}
+
+{% block title %}
+  Спирулина-МГУ
+{% endblock %}
+
+
+{% block content %}
+   <main>
+    <section class="container my-5 px-4">
+      <h1 class="text-center">Спирулина-<span style="color:red">МГУ</span></h1>
+      <p class="text-center my-4">
+        Войдите в админ-панель
+      </p>
+
+      <div class="container">
+        <div class="row my-3">
+          <div class="col-sm"></div>
+          <div class="col-sm">
+
+            <form method="POST" novalidate>
+              {{ form.csrf_token }}
+              {{ form.username(type="text", class="form-control form-control-lg py-2 mb-3", id="form-title", placeholder="Имя пользователя") }}
+              {% if form.username.errors %}
+                <p class="text-danger">
+                  {% for error in form.username.errors %}
+                    <p><span style="color:red">{{ error }}</span></p>
+                    {% endfor %}
+                </p>
+              {% endif %}
+              {{ form.password(type="text", class="form-control form-control-lg py-2 mb-3", id="form-link", placeholder="Пароль") }}
+              {% if form.password.errors %}
+                <p class="text-danger">
+                  {% for error in form.password.errors %}
+                    <p><span style="color:red">{{ error }}</span></p>
+                  {% endfor %}
+                </p>
+              {% endif %}
+              {{ form.submit(type="submit", class="btn btn-primary", value="Логин") }}
+            </form>
+
+          </div>
+          <div class="col-sm"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock content %}

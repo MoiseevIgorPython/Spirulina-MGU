@@ -1,0 +1,342 @@
+{% extends 'index.html' %}
+
+{% block title %}
+  {{ product.title }} - Спирулина-МГУ
+{% endblock %}
+
+{% block content %}
+<style>
+  /* Мобильная оптимизация карточки товара */
+  .product-detail-container {
+    min-height: auto;
+    padding: 20px 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  
+  .product-detail-card {
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
+    min-height: auto;
+    margin: 0 auto;
+    transform: none;
+    background: white;
+  }
+  
+  .product-image-container {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f8f9fa;
+    min-height: 200px;
+    position: relative;
+  }
+  
+  .product-info {
+    padding: 20px;
+    background: white;
+  }
+  
+  .order-form-container {
+    max-width: 100%;
+    margin: 30px auto;
+    border: 1px solid #9b9898;
+    border-radius: 0.25rem;
+    background: white;
+  }
+  
+  .product-image-full {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    display: block;
+    object-fit: contain;
+    background: #f8f9fa;
+  }
+  
+  /* Стабильные стили без переходов opacity */
+  .product-image {
+    opacity: 1;
+    transition: none;
+  }
+  
+  /* Адаптивность для мобильных */
+  @media (max-width: 768px) {
+    .product-detail-container {
+      padding: 10px;
+      height: auto;
+    }
+    
+    .product-detail-card {
+      margin: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .product-info {
+      padding: 15px;
+    }
+    
+    .card-title {
+      font-size: 1.4rem;
+    }
+    
+    .card-text {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    
+    .product-image-full {
+      max-height: 70vh;
+    }
+    
+    .product-image-container {
+      min-height: 150px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .product-info {
+      padding: 12px;
+    }
+    
+    .card-title {
+      font-size: 1.3rem;
+    }
+    
+    .order-form-container {
+      margin: 20px 0;
+      padding: 15px !important;
+    }
+    
+    .order-form-container h4 {
+      font-size: 1.1rem;
+    }
+    
+    .product-image-full {
+      max-height: 60vh;
+    }
+    
+    .product-image-container {
+      min-height: 120px;
+    }
+  }
+  
+  /* Планшеты и десктопы */
+  @media (min-width: 769px) {
+    .product-image-full {
+      max-height: 80vh;
+    }
+    
+    .product-image-container {
+      min-height: 300px;
+    }
+  }
+  
+  /* Улучшение формы для мобильных */
+  .form-control {
+    font-size: 16px; /* Предотвращает масштабирование в iOS */
+  }
+  
+  .btn-primary {
+    min-height: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  /* Убраны анимации загрузки чтобы избежать мерцания */
+  .image-placeholder {
+    width: 100%;
+    height: 300px;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    font-size: 1rem;
+  }
+  
+  /* Гарантированное отображение контента */
+  .content-stable {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+</style>
+
+<div class="product-detail-container">
+  <div class="card product-detail-card content-stable">
+    <div class="d-flex flex-column h-100">
+      <!-- Информация о товаре -->
+      <div class="product-info content-stable">
+        <h1 class="card-title h3 mb-3">{{ product.title }}</h1>
+        <div class="card-text mb-4">
+          <p class="lead">{{ product.description }}</p>
+        </div>
+        <div class="price-section">
+          <p class="card-text h4 text-primary">
+            <strong>Цена: {{ product.price }} ₽</strong>
+          </p>
+        </div>
+      </div>
+      
+      <!-- Изображение товара в полном размере -->
+      <div class="product-image-container content-stable">
+        <img src="{{ url_for('image', dir_name='products', filename=product.photo) }}" 
+             alt="{{ product.title }}"
+             class="product-image product-image-full content-stable"
+             loading="eager">
+        
+        <!-- Fallback если изображение не загрузилось -->
+        <div id="image-fallback" class="image-placeholder" style="display: none;">
+          <span>Изображение товара</span>
+        </div>
+      </div>
+    </div>
+    
+    <br>
+
+    <!-- Форма заказа -->
+    <div class="card order-form-container p-3 p-md-4 content-stable">
+      <div class="text-center mb-4">
+        <strong class="h4 d-block mb-2">Чтобы сделать заказ,</strong>
+        <h4 class="h5 text-muted">отправьте форму, и наш менеджер Вам перезвонит</h4>
+      </div>
+      
+      <form method="POST" novalidate class="needs-validation">
+        {{ form.csrf_token }}
+        
+        <!-- Поле имени -->
+        <div class="mb-3">
+          {{ form.name(type="text", 
+                      class="form-control form-control-lg py-3", 
+                      id="form-name", 
+                      placeholder="Ваше имя",
+                      required=true) }}
+          {% if form.name.errors %}
+            <div class="invalid-feedback d-block mt-2">
+              {% for error in form.name.errors %}
+                <span class="text-danger d-block">{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+        
+        <!-- Поле телефона -->
+        <div class="mb-3">
+          {{ form.number(type="tel", 
+                        class="form-control form-control-lg py-3", 
+                        id="form-phone", 
+                        placeholder="Телефон",
+                        inputmode="tel",
+                        required=true) }}
+          {% if form.number.errors %}
+            <div class="invalid-feedback d-block mt-2">
+              {% for error in form.number.errors %}
+                <span class="text-danger d-block">{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+        
+        <!-- Поле email -->
+        <div class="mb-4">
+          {{ form.email(type="email", 
+                       class="form-control form-control-lg py-3", 
+                       id="form-email", 
+                       placeholder="Электронная почта",
+                       inputmode="email") }}
+          {% if form.email.errors %}
+            <div class="invalid-feedback d-block mt-2">
+              {% for error in form.email.errors %}
+                <span class="text-danger d-block">{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+        
+        <!-- Кнопка отправки -->
+        <div class="d-grid">
+          {{ form.submit(type="submit", 
+                        class="btn btn-primary btn-lg py-3", 
+                        value="Отправить заявку") }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Оптимизация для мобильных устройств - убраны анимации чтобы избежать мерцания
+  document.addEventListener('DOMContentLoaded', function() {
+    // Автофокус на первом поле формы
+    const firstInput = document.querySelector('input[type="text"], input[type="tel"]');
+    if (firstInput && window.innerWidth > 768) {
+      setTimeout(() => firstInput.focus(), 100);
+    }
+    
+    // Оптимизация ввода телефона
+    const phoneInput = document.getElementById('form-phone');
+    if (phoneInput) {
+      phoneInput.addEventListener('input', function(e) {
+        // Форматирование номера телефона
+        let value = this.value.replace(/\D/g, '');
+        if (value.length > 0) {
+          if (value.length <= 3) {
+            value = value;
+          } else if (value.length <= 6) {
+            value = value.slice(0, 3) + '-' + value.slice(3);
+          } else if (value.length <= 8) {
+            value = value.slice(0, 3) + '-' + value.slice(3, 6) + '-' + value.slice(6);
+          } else {
+            value = value.slice(0, 3) + '-' + value.slice(3, 6) + '-' + value.slice(6, 8) + '-' + value.slice(8, 10);
+          }
+        }
+        this.value = value;
+      });
+    }
+    
+    // Гарантируем что все элементы видны сразу
+    document.querySelectorAll('.content-stable').forEach(el => {
+      el.style.opacity = '1';
+      el.style.visibility = 'visible';
+    });
+    
+    // Предотвращение масштабирования при фокусе
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        setTimeout(() => {
+          const rect = this.getBoundingClientRect();
+          if (rect.top < 100 || rect.bottom > window.innerHeight - 100) {
+            window.scrollTo(0, rect.top + window.pageYOffset - 100);
+          }
+        }, 50);
+      });
+    });
+    
+    // Адаптация размера изображения под экран (без анимаций)
+    function adaptImageSize() {
+      const image = document.querySelector('.product-image-full');
+      if (image && image.complete) {
+        const viewportHeight = window.innerHeight;
+        const maxHeight = Math.min(viewportHeight * 0.8, 800);
+        image.style.maxHeight = maxHeight + 'px';
+      }
+    }
+    
+    // Вызываем при загрузке и изменении размера окна
+    adaptImageSize();
+    window.addEventListener('resize', adaptImageSize);
+    
+    // Предзагрузка критических ресурсов
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', adaptImageSize);
+    } else {
+      adaptImageSize();
+    }
+  });
+</script>
+{% endblock %}
