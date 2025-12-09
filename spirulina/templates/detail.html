@@ -64,6 +64,17 @@
     transition: none;
   }
   
+  /* Стили для уведомлений */
+  .alert {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050;
+    min-width: 300px;
+    text-align: center;
+  }
+  
   /* Адаптивность для мобильных */
   @media (max-width: 768px) {
     .product-detail-container {
@@ -164,6 +175,19 @@
     opacity: 1 !important;
     visibility: visible !important;
   }
+  
+  /* Стили для кнопки загрузки */
+  .btn-loading .submit-text {
+    display: none;
+  }
+  
+  .btn-loading .spinner-border {
+    display: inline-block !important;
+  }
+  
+  .spinner-border {
+    display: none;
+  }
 </style>
 
 <div class="product-detail-container">
@@ -205,7 +229,7 @@
         <h4 class="h5 text-muted">отправьте форму, и наш менеджер Вам перезвонит</h4>
       </div>
       
-      <form method="POST" novalidate class="needs-validation">
+      <form id="order-form" method="POST" novalidate>
         {{ form.csrf_token }}
         
         <!-- Поле имени -->
@@ -259,9 +283,12 @@
         
         <!-- Кнопка отправки -->
         <div class="d-grid">
-          {{ form.submit(type="submit", 
-                        class="btn btn-primary btn-lg py-3", 
-                        value="Отправить заявку") }}
+          <button type="submit" class="btn btn-primary btn-lg py-3" id="submit-btn">
+            <span class="submit-text">Отправить заявку</span>
+            <div class="spinner-border spinner-border-sm" role="status">
+              <span class="visually-hidden">Загрузка...</span>
+            </div>
+          </button>
         </div>
       </form>
     </div>
@@ -277,24 +304,12 @@
       setTimeout(() => firstInput.focus(), 100);
     }
     
-    // Оптимизация ввода телефона
+    // Оптимизация ввода телефона - БЕЗ ДЕФИСОВ, как в шаблоне
     const phoneInput = document.getElementById('form-phone');
     if (phoneInput) {
       phoneInput.addEventListener('input', function(e) {
-        // Форматирование номера телефона
-        let value = this.value.replace(/\D/g, '');
-        if (value.length > 0) {
-          if (value.length <= 3) {
-            value = value;
-          } else if (value.length <= 6) {
-            value = value.slice(0, 3) + '-' + value.slice(3);
-          } else if (value.length <= 8) {
-            value = value.slice(0, 3) + '-' + value.slice(3, 6) + '-' + value.slice(6);
-          } else {
-            value = value.slice(0, 3) + '-' + value.slice(3, 6) + '-' + value.slice(6, 8) + '-' + value.slice(8, 10);
-          }
-        }
-        this.value = value;
+        // Только удаляем недопустимые символы, без добавления дефисов
+        this.value = this.value.replace(/[^\d+()-]/g, '');
       });
     }
     
@@ -303,6 +318,72 @@
       el.style.opacity = '1';
       el.style.visibility = 'visible';
     });
+    
+    // Обработка отправки формы без перезагрузки страницы
+    const orderForm = document.getElementById('order-form');
+    const submitBtn = document.getElementById('submit-btn');
+    
+    if (orderForm) {
+      orderForm.addEventListener('submit', async function(e) {
+        e.preventDefault(); // Предотвращаем стандартную отправку и скроллинг
+        
+        // Показываем состояние загрузки
+        submitBtn.classList.add('btn-loading');
+        submitBtn.disabled = true;
+        
+        try {
+          const formData = new FormData(this);
+          
+          const response = await fetch('', {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+            }
+          });
+          
+          if (response.ok) {
+            // Успешная отправка
+            showAlert('Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.', 'success');
+            orderForm.reset(); // Очищаем форму
+          } else {
+            throw new Error('Ошибка отправки формы');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          showAlert('Произошла ошибка при отправке заявки. Пожалуйста, попробуйте еще раз.', 'danger');
+        } finally {
+          // Восстанавливаем кнопку
+          submitBtn.classList.remove('btn-loading');
+          submitBtn.disabled = false;
+        }
+      });
+    }
+    
+    // Функция показа уведомлений
+    function showAlert(message, type) {
+      // Удаляем предыдущие уведомления
+      const existingAlert = document.querySelector('.alert');
+      if (existingAlert) {
+        existingAlert.remove();
+      }
+      
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+      alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      `;
+      
+      document.body.appendChild(alertDiv);
+      
+      // Автоматически скрываем через 5 секунд
+      setTimeout(() => {
+        if (alertDiv.parentNode) {
+          alertDiv.remove();
+        }
+      }, 5000);
+    }
     
     // Предотвращение масштабирования при фокусе
     const inputs = document.querySelectorAll('input');

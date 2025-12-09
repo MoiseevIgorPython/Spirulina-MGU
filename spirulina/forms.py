@@ -26,11 +26,11 @@ class OrderForm(FlaskForm):
         validators=[DataRequired(message='Укажите имя'),
                     Length(1, 32)])
     number = StringField(
-        validators=[DataRequired(message='Укажите номер телефона (89159999999)')])
+        validators=[DataRequired(message='Укажите номер телефона (11 цифр)')])
     email = EmailField()
     submit = SubmitField()
 
-    def validate_number(self, field):
-        if field.data:
-            if len(field.data) != 11 or not field.data.isdigit():
-                raise ValidationError('Недопустимый номер телефона') 
+    # def validate_number(self, field):
+    #     if field.data:
+    #         if len(field.data) != 11 or not field.data.isdigit():
+    #             raise ValidationError('Недопустимый номер телефона')

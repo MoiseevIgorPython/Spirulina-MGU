@@ -7,7 +7,7 @@
 {% block content %}
 <main>
   <style>
-    /* Мобильная оптимизация карусели */
+    /* Ваши существующие стили */
     .carousel-inner {
       height: 50vh;
       max-height: 400px;
@@ -20,7 +20,6 @@
       object-fit: contain;
     }
     
-    /* Адаптивные карточки товаров */
     .product-card {
       width: 100%;
       max-width: 300px;
@@ -34,7 +33,6 @@
       object-fit: cover;
     }
     
-    /* Адаптивная форма */
     .order-form {
       max-width: 100%;
       margin: 20px auto;
@@ -42,7 +40,17 @@
       border-radius: 0.25rem;
     }
     
-    /* Улучшение тапов на мобильных */
+    /* Стили для уведомлений */
+    .alert {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1050;
+      min-width: 300px;
+      text-align: center;
+    }
+    
     .btn, .card a {
       min-height: 44px;
       display: inline-flex;
@@ -50,7 +58,6 @@
       justify-content: center;
     }
     
-    /* Оптимизация для маленьких экранов */
     @media (max-width: 576px) {
       .carousel-inner {
         height: 40vh;
@@ -75,7 +82,6 @@
       }
     }
     
-    /* Планшеты */
     @media (min-width: 577px) and (max-width: 768px) {
       .carousel-inner {
         height: 45vh;
@@ -87,7 +93,6 @@
       }
     }
     
-    /* Lazy loading для изображений */
     .carousel-image, .product-image {
       opacity: 0;
       transition: opacity 0.3s ease;
@@ -101,7 +106,7 @@
   <section class="container-section container my-5 px-3 px-md-4" style="transform: translateY(-80px);">
     <h1 class="text-center mb-4">Спирулина-<span style="color:red">МГУ</span></h1>
 
-    <!-- Карусель с lazy loading -->
+    <!-- Карусель -->
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
       <div class="carousel-indicators">
         {% for photo in blog_photos %}
@@ -144,7 +149,6 @@
           <div class="col-12 col-sm-6 col-lg-4 d-flex justify-content-center">
             <div class="card product-card shadow-sm">
               <div class="d-flex flex-column h-100">
-                <!-- Изображение товара -->
                 <div class="flex-shrink-0" style="height: 150px; overflow: hidden;">
                   <a href="{{ url_for('detail', id=product.id)}}" class="h-100 d-block">
                     <img src="{{ url_for('image', dir_name='products', filename=product.photo) }}" 
@@ -155,7 +159,6 @@
                   </a>
                 </div>
                 
-                <!-- Информация о товаре -->
                 <div class="card-body d-flex flex-column flex-grow-1">
                   <h5 class="card-title">
                     <a href="{{ url_for('detail', id=product.id)}}" class="text-decoration-none text-dark">
@@ -177,7 +180,7 @@
       <strong class="h4 mb-2">Чтобы сделать заказ,</strong>
       <p class="h5 mb-3">отправьте форму, и наш менеджер Вам перезвонит</p>
 
-      <form method="POST" novalidate class="needs-validation">
+      <form id="order-form" method="POST" novalidate>
         {{ form.csrf_token }}
         
         <div class="mb-3">
@@ -213,14 +216,18 @@
           {% endif %}
         </div>
         
-        {{ form.submit(type="submit", class="btn btn-primary btn-lg w-100 py-3", value="Отправить") }}
+        <button type="submit" class="btn btn-primary btn-lg w-100 py-3" id="submit-btn">
+          <span class="submit-text">Отправить</span>
+          <div class="spinner-border spinner-border-sm d-none" role="status">
+            <span class="visually-hidden">Загрузка...</span>
+          </div>
+        </button>
       </form>
     </div>
   </section>
 </main>
 
 <script>
-  // Lazy loading для карусели
   document.addEventListener('DOMContentLoaded', function() {
     // Lazy load карусельных изображений
     const carouselImages = document.querySelectorAll('.carousel-image');
@@ -242,14 +249,75 @@
       });
     }
     
-    // Предотвращение масштабирования при фокусе на инпутах
-    const inputs = document.querySelectorAll('input[type="text"], input[type="tel"], input[type="email"]');
-    inputs.forEach(input => {
-      input.addEventListener('focus', function() {
-        window.scrollTo(0, 0);
-        document.body.style.zoom = "1.0";
+    // Обработка отправки формы
+    const orderForm = document.getElementById('order-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const submitText = submitBtn.querySelector('.submit-text');
+    const spinner = submitBtn.querySelector('.spinner-border');
+    
+    if (orderForm) {
+      orderForm.addEventListener('submit', async function(e) {
+        e.preventDefault(); // Предотвращаем стандартную отправку
+        
+        // Показываем спиннер загрузки
+        submitText.classList.add('d-none');
+        spinner.classList.remove('d-none');
+        submitBtn.disabled = true;
+        
+        try {
+          const formData = new FormData(this);
+          
+          const response = await fetch('', {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+            }
+          });
+          
+          if (response.ok) {
+            // Успешная отправка
+            showAlert('Форма успешно отправлена! Мы свяжемся с вами в ближайшее время.', 'success');
+            orderForm.reset(); // Очищаем форму
+          } else {
+            throw new Error('Ошибка отправки формы');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          showAlert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.', 'danger');
+        } finally {
+          // Восстанавливаем кнопку
+          submitText.classList.remove('d-none');
+          spinner.classList.add('d-none');
+          submitBtn.disabled = false;
+        }
       });
-    });
+    }
+    
+    // Функция показа уведомлений
+    function showAlert(message, type) {
+      // Удаляем предыдущие уведомления
+      const existingAlert = document.querySelector('.alert');
+      if (existingAlert) {
+        existingAlert.remove();
+      }
+      
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+      alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      `;
+      
+      document.body.appendChild(alertDiv);
+      
+      // Автоматически скрываем через 5 секунд
+      setTimeout(() => {
+        if (alertDiv.parentNode) {
+          alertDiv.remove();
+        }
+      }, 5000);
+    }
   });
 </script>
 {% endblock %}

@@ -2,7 +2,7 @@ from flask import redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
-from werkzeug.security import check_password_hash
+
 from .. import app, db
 from ..models import User, Products
 import os

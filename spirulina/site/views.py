@@ -1,24 +1,27 @@
+import os
 from flask import render_template, send_from_directory
-from spirulina import app, db, mail
+
+from spirulina import app, mail
 from ..models import Products
 from ..forms import OrderForm
 from ..settings import MEDIA
 from flask_mail import Message
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def send_mail(theme: str, text: str, sender: str, recipients: list):
     try:
         msg = Message(
             subject=theme,
-            sender=(sender, app.config['MAIL_USERNAME']),  # исправляем отправителя
+            sender=(sender, app.config['MAIL_USERNAME']),
             recipients=recipients
         )
         msg.body = text
         mail.send(msg)
-        print(f"Письмо отправлено: {theme}")
         return 'Письмо отправлено'
     except Exception as e:
-        print(f"Ошибка отправки письма: {e}")
         return f'Ошибка отправки: {str(e)}'
 
 
@@ -36,7 +39,7 @@ def index():
         send_mail(theme='Новый заказ',
                   text=f'Пользователь {name}; номер {number}; email {email}',
                   sender=name,
-                  recipients=['igor.moiseev1990@gmail.com'])
+                  recipients=[os.getenv('RECIPIENT_MAIL')])
         return render_template('list.html',
                                products=products,
                                photos=photos,
@@ -49,11 +52,22 @@ def index():
                            form=order_form)
 
 
-@app.route('/<int:id>')
+@app.route('/<int:id>', methods=['GET', 'POST'])
 def detail(id):
-    form = OrderForm()
+    order_form = OrderForm()
     product = Products.query.get(id)
-    return render_template('detail.html', product=product, form=form)
+    if order_form.validate_on_submit():
+        name = order_form.name.data
+        number = order_form.number.data
+        email = order_form.email.data
+        send_mail(theme='Новый заказ',
+                  text=f'Пользователь {name}; номер {number}; email {email}',
+                  sender=name,
+                  recipients=[os.getenv('RECIPIENT_MAIL')])
+        return render_template('detail.html',
+                               product=product,
+                               form=OrderForm())
+    return render_template('detail.html', product=product, form=order_form)
 
 
 @app.route('/image/<dir_name>/<filename>')
