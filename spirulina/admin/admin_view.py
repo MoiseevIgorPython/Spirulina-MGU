@@ -1,8 +1,10 @@
-from flask import request, session, redirect, url_for, render_template
+from flask import redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash
-from ..models import User
-from ..forms import UserLogin
+
 from spirulina import app, db, login_manager
+
+from ..forms import UserLogin
+from ..models import User
 
 
 @login_manager.user_loader

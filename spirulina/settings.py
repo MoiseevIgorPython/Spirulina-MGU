@@ -22,18 +22,3 @@ class Config(object):
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     MAIL_DEFAULT_SENDER = os.environ.get('MAIL_USERNAME')
     MAIL_DEBUG = False
-
-a=Config()
-print('=====================')
-print(a.MAIL_USERNAME)
-print(a.SQLALCHEMY_DATABASE_URI)
-print(a.SECRET_KEY)
-print(a.MAIL_SERVER)
-print(a.MAIL_PORT)
-print(a.MAIL_USE_TLS)
-print(a.MAIL_USE_SSL)
-print(a.MAIL_USERNAME)
-print(a.MAIL_PASSWORD)
-print(a.MAIL_DEFAULT_SENDER)
-print(a.MAIL_DEBUG)
-print('=====================')

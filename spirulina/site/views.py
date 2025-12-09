@@ -1,12 +1,14 @@
 import os
+
+from dotenv import load_dotenv
 from flask import render_template, send_from_directory
+from flask_mail import Message
 
 from spirulina import app, mail
-from ..models import Products
+
 from ..forms import OrderForm
+from ..models import Products
 from ..settings import MEDIA
-from flask_mail import Message
-from dotenv import load_dotenv
 
 load_dotenv()
 

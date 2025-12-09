@@ -1,6 +1,7 @@
-from sqlalchemy.orm import mapped_column, Mapped
-from sqlalchemy import String, Integer, Boolean
-from flask_login import UserMixin, AnonymousUserMixin
+from flask_login import AnonymousUserMixin, UserMixin
+from sqlalchemy import Boolean, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column
+
 from spirulina import db
 
 

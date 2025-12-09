@@ -1,12 +1,13 @@
-from flask import redirect, url_for, session
-from flask_sqlalchemy import SQLAlchemy
+import os
+
+from flask import redirect, session, url_for
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
+from flask_admin.form import FileUploadField
+from flask_sqlalchemy import SQLAlchemy
 
 from .. import app, db
-from ..models import User, Products
-import os
-from flask_admin.form import FileUploadField
+from ..models import Products, User
 
 
 # Кастомный View для админки с проверкой аутентификации
