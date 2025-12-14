@@ -14,6 +14,7 @@ load_dotenv()
 
 
 def send_mail(theme: str, text: str, sender: str, recipients: list):
+    """Функция отправки писем"""
     try:
         msg = Message(
             subject=theme,
