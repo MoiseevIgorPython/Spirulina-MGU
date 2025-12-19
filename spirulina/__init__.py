@@ -27,6 +27,6 @@ login_manager.init_app(app)
 login_manager.login_view = "login"
 login_manager.login_message = "Залогиньтесь пожалуйста!!!"
 
-from . import models
+from . import models, error_handlers
 from .admin import admin, admin_view
 from .site import views

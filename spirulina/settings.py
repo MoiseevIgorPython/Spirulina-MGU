@@ -11,7 +11,7 @@ MEDIA.mkdir(parents=True, exist_ok=True)
 
 
 class Config(object):
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
     SECRET_KEY = os.environ.get('SECRET_KEY')
 
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
